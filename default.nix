@@ -5,6 +5,6 @@ pkgs.symlinkJoin {
   paths = [
     (pkgs.callPackage ./nix-script { inherit pinnedPkgs; })
     (pkgs.callPackage ./nix-script-bash { })
-    (pkgs.callPackage ./nix-script-haskell { })
+    (pkgs.callPackage ./nix-script-haskell { inherit pinnedPkgs; })
   ];
 }

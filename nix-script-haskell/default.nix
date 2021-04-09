@@ -3,7 +3,7 @@
 let
   gitignore = pkgs.callPackage sources.gitignore { };
 
-  nix-script = pkgs.callPackage ../nix-script { };
+  nix-script = pkgs.callPackage ../nix-script { inherit pinnedPkgs; };
   nix-script-haskell = pkgs.haskellPackages.callCabal2nix "nix-script-haskell"
     (gitignore.gitignoreSource ./.) { };
 in pkgs.stdenv.mkDerivation {
@@ -24,6 +24,7 @@ in pkgs.stdenv.mkDerivation {
     mkdir -p $out/bin
 
     makeWrapper ${nix-script-haskell}/bin/nix-script-haskell $out/bin/nix-script-haskell \
+      --set NIX_PATH nixpkgs=${pinnedPkgs} \
       --prefix PATH : ${pkgs.lib.makeBinPath [ nix-script ]}
   '';
 }

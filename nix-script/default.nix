@@ -20,9 +20,10 @@ in pkgs.stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/bin
+  '';
 
-    makeWrapper ${nix-script}/bin/nix-script $out/bin/nix-script \
-      --set NIX_PATH nixpkgs=${pinnedPkgs} \
+  postInstall = ''
+    wrapProgram ${nix-script}/bin/nix-script $out/bin/nix-script \
       --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nix ]}
   '';
 }
